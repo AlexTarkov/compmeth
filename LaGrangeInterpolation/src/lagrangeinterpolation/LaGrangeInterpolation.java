@@ -39,7 +39,7 @@ public class LaGrangeInterpolation {
             buf[1] = func.getFunctionResult(x[i]);
             buf[2] = func.computeLagrangeInterpolation(x[i]);
             buf[3] = Math.abs(func.getFunctionResult(x[i]) - func.computeLagrangeInterpolation(x[i]));
-            buf[4] = 0.0;
+            buf[4] = func.getA(x[i]);
             System.out.print(String.format("%"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s", 
                     String.format("%.5f", buf[0]) , 
                     String.format("%.5f", buf[1]) , 
@@ -78,8 +78,8 @@ public class LaGrangeInterpolation {
             }
 
             @Override
-            double getFunctionDerivative(double x) {
-                throw new UnsupportedOperationException("Not supported yet.");
+            double getMaxFunctionDerivative(int n) {
+                return 1;
             }
         };
     
@@ -91,8 +91,8 @@ public class LaGrangeInterpolation {
             }
 
             @Override
-            double getFunctionDerivative(double x) {
-                throw new UnsupportedOperationException("Not supported yet.");
+            double getMaxFunctionDerivative(int i) {
+                return 0;
             }
         };
         
@@ -117,7 +117,7 @@ public class LaGrangeInterpolation {
             }
 
             @Override
-            double getFunctionDerivative(double x) {
+            double getMaxFunctionDerivative(int n) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         };

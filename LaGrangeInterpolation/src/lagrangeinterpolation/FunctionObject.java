@@ -13,10 +13,10 @@ public abstract class FunctionObject {
     public double[] fi;
     public double[] xi;
     
-    public int n;
+    private int n;
     
     abstract double getFunctionResult(double x);
-    abstract double getFunctionDerivative(double x);
+    abstract double getMaxFunctionDerivative(int n);
 
     public FunctionObject(double[] x) {
         xi = x;
@@ -31,7 +31,7 @@ public abstract class FunctionObject {
     private double li(double x, int k) {
         double result = 1;
         
-        for (int i = 0; i < xi.length; i++) {
+        for (int i = 0; i < n; i++) {
             if (k != i) 
             result *= (x - xi[i]) / (xi[k] - xi[i]);
         }
@@ -44,6 +44,16 @@ public abstract class FunctionObject {
             result += li(x, i) * fi[i];
         }
         return result;
+    }
+    
+    public double getA(double x) {
+        double res = 1;
+        int fact = 1;
+        for (int i = 0; i < n; i++) {
+            fact++;
+            res *= (x - xi[i]) / fact;
+        }
+        return Math.abs(res) * getMaxFunctionDerivative(n + 1);
     }
     
     

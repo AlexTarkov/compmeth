@@ -271,7 +271,9 @@ public class Interpolation {
     
     public static int getNearestYIndex(double y, double[] sety) {
         for (int i = 0; i < sety.length; i++) {
-            if (sety[i] > y) return i - 1;
+            if (sety[i] > y) {
+                return i - 1;
+            }
         }
         return -1;
     }
