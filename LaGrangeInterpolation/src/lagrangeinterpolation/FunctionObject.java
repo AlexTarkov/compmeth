@@ -48,7 +48,7 @@ public abstract class FunctionObject {
     
     public double getA(double x) {
         double res = 1;
-        int fact = 1;
+        int fact = 0;
         for (int i = 0; i < n; i++) {
             fact++;
             res *= (x - xi[i]) / fact;

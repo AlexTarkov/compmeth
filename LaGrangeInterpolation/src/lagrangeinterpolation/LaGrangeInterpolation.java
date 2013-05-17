@@ -22,15 +22,17 @@ public class LaGrangeInterpolation {
         int n = x.length;
         
         int len = 9;
+        int lendouble = 5;
         
-        double[] buf = new double[5];
+        double[] buf = new double[6];
         
-        System.out.print(String.format("%"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s", 
+        System.out.print(String.format("%"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s", 
                     "x[i]" , 
                     "f(x[i])" , 
                     "L[n](f,x)" , 
                     "|f-L[n]|" , 
-                    "A"  
+                    "A" ,
+                    "|f-L[n]|-A"
                     ));
             System.out.println();
         
@@ -40,12 +42,15 @@ public class LaGrangeInterpolation {
             buf[2] = func.computeLagrangeInterpolation(x[i]);
             buf[3] = Math.abs(func.getFunctionResult(x[i]) - func.computeLagrangeInterpolation(x[i]));
             buf[4] = func.getA(x[i]);
-            System.out.print(String.format("%"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s", 
-                    String.format("%.5f", buf[0]) , 
-                    String.format("%.5f", buf[1]) , 
-                    String.format("%.5f", buf[2]) , 
-                    String.format("%.5f", buf[3]) , 
-                    String.format("%.5f", buf[4])  
+            buf[5] = Math.abs(func.getFunctionResult(x[i]) - func.computeLagrangeInterpolation(x[i]) - func.getA(x[i]));
+            if(buf[3]-buf[4] > 0) System.exit(0);
+            System.out.print(String.format("%"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s", 
+                    String.format("%."+lendouble+"f", buf[0]) , 
+                    String.format("%."+lendouble+"f", buf[1]) , 
+                    String.format("%."+lendouble+"f", buf[2]) , 
+                    String.format("%."+lendouble+"f", buf[3]) , 
+                    String.format("%."+lendouble+"f", buf[4]) ,
+                    String.format("%."+lendouble+"f", buf[5])
                     ));
             System.out.println();
         }
@@ -101,12 +106,13 @@ public class LaGrangeInterpolation {
         double[] xiIII = get20Point(pi / 4, pi * 3 / 4);
         double[] xiIV = get20Point(0, pi);
         
+        out("First Half");
         outTable(func1, xiI);
-        out("");
+        out("Second Half");
         outTable(func1, xiII);
-        out("");
+        out("Center Piece");
         outTable(func1, xiIII);
-        out("");
+        out("All Interval");
         outTable(func1, xiIV);
         
         FunctionObject funcwiki = new FunctionObject(xiwiki) {

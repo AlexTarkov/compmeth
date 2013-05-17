@@ -1,5 +1,6 @@
 #MY IGNORE
 *.class
+Newton/*
 #---------------------------------------------------
 /SolutionOfEquation/nbproject/private/
 /SolutionOfEquation/build/

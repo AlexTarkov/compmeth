@@ -15,7 +15,7 @@ public class Interpolation {
     }
     
     static void out(double a) {
-        out("" + a);
+        //out("" + a);
     }
     
     static void printArray(double[] x) {
@@ -26,7 +26,7 @@ public class Interpolation {
     }
     
     private static int DEG = 4;
-    private static double EPS = 0.0001;
+    private static double EPS = 0.00001;
     
     private static double K = 0;
 //==============================================================================
@@ -78,6 +78,26 @@ public class Interpolation {
         out("t: " + (t / diffx));
         return t / diffx;
     }
+    
+    
+    public static double getTEnd(double x, double[] setx) { //накладывает ограничение, при котором х только возрастающий
+        double t = 10000;
+        double diffx = Math.abs(setx[0] - setx[1]);
+
+        for (int i = 1; i < setx.length; i++) {
+//            if (setx[i] > x) {
+//                t = x - setx[i-1]; break;
+//            }
+            if (setx[setx.length-1 - i] < x) {
+                t = x - setx[setx.length-1 - i + 1]; break;
+            }
+        }
+        out("t: " + (t / diffx));
+        return t / diffx;
+    }
+    
+    
+    
 //==============================================================================
 
     static int getSetXNumber(double[] setx, double x, double t) {
@@ -170,14 +190,24 @@ public class Interpolation {
         
         System.out.println("IntB: " + getBeginInterpolationY(bx, setx, sety)); // [B]
         
+        System.out.println("IntC(B): " + getBeginInterpolationY(cx, setx, sety)); // [B]
         System.out.println("IntC: " + getCenterInterpolationY(cx, setx, sety)); // [?]
+        System.out.println("IntC(E): " + getEndInterpolationY(cx, setx, sety)); // [B]
+        
+        System.out.println("IntC(Begin) - IntC = " + String.format("%.10f", getBeginInterpolationY(cx, setx, sety) - 
+                getCenterInterpolationY(cx, setx, sety))); // [B]
+        
+        System.out.println("IntC(End) - IntC = " + String.format("%.10f", getEndInterpolationY(cx, setx, sety) - 
+                getCenterInterpolationY(cx, setx, sety))); // [B]
         
         System.out.println("IntE: " + getEndInterpolationY(ex, setx, sety)); // [B]
         
         
-        
-        System.out.print("RevInt: " + getReverseInterpolation(y, setx, sety) + " (k = " + K + ")"); // [?]
-        System.out.println("(CheckRevInt: " + getBeginInterpolationY(getReverseInterpolation(y, setx, sety), setx, sety) + ")"); // [?]
+        double revint = getReverseInterpolation(y, setx, sety);
+        System.out.println("RevInt: " + revint + " (k = " + K + ")"); // [?]
+        double begint = getBeginInterpolationY(revint, setx, sety);
+        System.out.println("(CheckRevInt: " + begint + ")" ); // [?]
+        System.out.println("Полученное - Заданное = " + String.format("%.10f", begint - y)); // [?]
         
         //printArray(getSetC(4, 0.48));  
     }
@@ -215,6 +245,8 @@ public class Interpolation {
         int num = getSetXNumber(setx, x, t);
         
         for (int i = 0; i <= DEG; i++) {
+            //System.out.println("i = " + i + " : " + (num-i));
+            if((i < 0) || (num-i)<0) break;
             m *= -1; // возможно не нужно. в конспекте нет изменения знака.
             y += m * setc[i] * difftable[i][num-i];
         }
@@ -244,7 +276,7 @@ public class Interpolation {
     //--------------------------------------------------------------------------
     
     public static double getReverseInterpolation(double y, double[] setx, double[] sety) {
-        double result = 0;
+        double result;
         
         int yindex = getNearestYIndex(y, sety);
         //out("yt = " + ty);
@@ -262,6 +294,8 @@ public class Interpolation {
             p = Math.abs(lasty - getBeginInterpolationY(setx[yindex] + t * (setx[1] - setx[0]), setx, sety));
             lasty = getBeginInterpolationY(setx[yindex] + t * (setx[1] - setx[0]), setx, sety);
             out("delP: " + p);
+            System.out.print("RevInt: " + (setx[yindex] + t * (setx[1] - setx[0])) + " (k = " + k + ")"); // [?]
+            System.out.println("(CheckRevInt: " + lasty + ")"); // [?]
         }
         out("K: " + k);
         K = k;
