@@ -41,26 +41,32 @@ public class Integral1 {
         double a = 0;
         double b = 0.4;
         
-        double[] buf;
+        double[] buf, buf1;
         
-        System.out.println(String.format("%"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s", 
+        System.out.println(String.format(
+                "%"+len+"s | %"+len+"s | %"+len+"s | %"+len+"s | %"
+                +len+"s | %"+len+"s | %"+len+"s |", 
                     "n=8" , 
                     "n=16" , 
                     "Rooney" , 
                     "A8" , 
-                    "A16"  
+                    "A16",
+                    "8-SiRo",
+                    "16-SiRo"
                     ));
+        
+        buf1 = getSimpsonInterpolation(func1, a, b);
+        
         System.out.println("Rectangle");
         buf = getRectangleCenterInterpolation(func1, a, b);
-        outTable(buf, len, lendouble);
+        outTable(buf, Math.abs(buf[0] - buf1[2]), Math.abs(buf[1] - buf1[2]), len, lendouble);
         
         System.out.println("Trapeze");
         buf = getTrapezeInterpolation(func1, a, b);
-        outTable(buf, len, lendouble);
+        outTable(buf, Math.abs(buf[0] - buf1[2]), Math.abs(buf[1] - buf1[2]), len, lendouble);
         
         System.out.println("Simpson");
-        buf = getSimpsonInterpolation(func1, a, b);
-        outTable(buf, len, lendouble);
+        outTable(buf1, Math.abs(buf1[0] - buf1[2]), Math.abs(buf1[1] - buf1[2]), len, lendouble);
         
         //outTable(func1, 0, 0.4);
         
@@ -187,7 +193,31 @@ public class Integral1 {
         
         return result;
     }
+ 
     
+    public void outTable(double[] buf, double sr8, double sr16, int len, int lendouble) {
+        //String format = "";
+        for (int i = 0; i < buf.length; i++) {
+            System.out.print(String.format("%"+len+"s | ", String.format("%."+lendouble+"f", buf[i])));
+            //format += "%"+len+"s | ";
+        }
+        
+        System.out.print(String.format("%"+len+"s | ", String.format("%."+lendouble+"f", sr8)));
+        System.out.print(String.format("%"+len+"s | ", String.format("%."+lendouble+"f", sr16)));
+        System.out.println();
+//        System.out.println(String.format(format, 
+//                    String.format("%."+lendouble+"f", buf[0]) , 
+//                    String.format("%."+lendouble+"f", buf[1]) , 
+//                    String.format("%."+lendouble+"f", buf[2]) , 
+//                    String.format("%."+lendouble+"f", buf[3]) , 
+//                    String.format("%."+lendouble+"f", buf[4])  
+//                    ));
+    }
+    
+}
+
+
+   
 //    void outTable(FunctionObject func, double a, double b) {
 ////        int n = 5;
 ////        
@@ -239,21 +269,3 @@ public class Integral1 {
 ////                    ));
 //        //System.out.println();
 //    }
-    
-    public void outTable(double[] buf,int len,int lendouble) {
-        //String format = "";
-        for (int i = 0; i < buf.length; i++) {
-            System.out.print(String.format("%"+len+"s | ", String.format("%."+lendouble+"f", buf[i])));
-            //format += "%"+len+"s | ";
-        }
-        System.out.println();
-//        System.out.println(String.format(format, 
-//                    String.format("%."+lendouble+"f", buf[0]) , 
-//                    String.format("%."+lendouble+"f", buf[1]) , 
-//                    String.format("%."+lendouble+"f", buf[2]) , 
-//                    String.format("%."+lendouble+"f", buf[3]) , 
-//                    String.format("%."+lendouble+"f", buf[4])  
-//                    ));
-    }
-    
-}

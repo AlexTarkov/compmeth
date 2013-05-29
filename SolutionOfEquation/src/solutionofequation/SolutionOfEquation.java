@@ -51,8 +51,9 @@ public class SolutionOfEquation {
         int firstminusdegree = -1;
         
         int degree = x.length - 1;
-        
+        System.out.println("begin");
         for (int i = 0; i <= degree; i++) {
+            //System.out.println(x[i]);
             maxminus = (x[i] < maxminus) ? x[i] : maxminus;
             firstminusdegree = (x[i] < 0) ? i : firstminusdegree;
         }
@@ -343,7 +344,14 @@ public class SolutionOfEquation {
     public static void main(String[] args) {
         SolutionOfEquation obj = new SolutionOfEquation();
         //double[] poly = {1, -36, -9, 0, 9};
-        double[][] polynoms = {{-4.2, 5.2, 0.1, -2.9, 1}, {24, -2, -25, 2, 1}};
+        double[][] polynoms = {
+            {-4.2, 5.2, 0.1, -2.9, 1}, 
+            {24, -2, -25, 2, 1},
+            {0.000548332216,
+                -0.02910022244251,
+                0.2915434489,
+                1,1}
+        };
         //obj.printArray(obj.getFirstApproximation(poly));
         for (int i = 0; i < polynoms.length; i++) {
             obj.printPoly(polynoms[i]);
